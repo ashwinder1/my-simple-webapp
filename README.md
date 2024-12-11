@@ -75,6 +75,10 @@ Open a browser and go to URL
 
 - Tag the image:
 
+- Tag during build
+  `docker build -t my-dockerhub-username/my-simple-webapp .`
+  
+- Tag after build
   `docker tag my-dockerhub-username/my-simple-webapp my-dockerhub-username/my-simple-webapp:latest`
 
 - Push the image:
