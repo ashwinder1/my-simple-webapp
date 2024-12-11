@@ -17,5 +17,8 @@ RUN pip3 install -r requirements.txt
 # Expose the application port
 EXPOSE 5000
 
+# Set the environment variable for Flask
+ENV FLASK_APP=/my-simple-webapp/app.py
+
 # Set the entry point
 ENTRYPOINT ["flask", "run", "--host=0.0.0.0"]
