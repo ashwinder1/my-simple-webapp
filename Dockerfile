@@ -1,24 +1,28 @@
 # Base image
-FROM ubuntu:latest
+FROM ubuntu
 
 # Update system and install dependencies
-RUN apt-get update && apt-get install -y python3 python3-pip
+RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
 
 # Create application directory
-WORKDIR /my-simple-webapp
+WORKDIR /myapp
 
 # Copy application files
-COPY app.py /my-simple-webapp/app.py
-COPY requirements.txt /my-simple-webapp/requirements.txt
+COPY app.py /myapp/app.py
+COPY requirements.txt /myapp/requirements.txt
 
-# Install Python dependencies
-RUN pip3 install -r requirements.txt
+# Create and activate a virtual environment, then install dependencies
+RUN python3 -m venv venv && \
+    . venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # Expose the application port
 EXPOSE 5000
 
 # Set the environment variable for Flask
-ENV FLASK_APP=/my-simple-webapp/app.py
+ENV PATH="/myapp/venv/bin:$PATH"
 
 # Set the entry point
 ENTRYPOINT ["flask", "run", "--host=0.0.0.0"]
+
