@@ -1,67 +1,83 @@
 # My Simple Web Application
 
-This is a simple web application using [Python Flask](http://flask.pocoo.org/) and [MySQL](https://www.mysql.com/) database. 
+This is a simple web application using [Python Flask](http://flask.pocoo.org/). 
 This is used in the demonstration of teaching Docker and Docker hub.
   
   Below are the steps required to get this working on a base linux system.
   
   - Install all required dependencies
-  - Install and Configure Database
-  - Start Database Service
   - Install and Configure Web Server
   - Start Web Server
-   
-## 1. Install all required dependencies
+
+## 1. Pull base docker image and attach its input and terminal
   
-  Python and its dependencies
+ Base image and its dependencies
 
-    apt-get install -y python python-setuptools python-dev build-essential python-pip python-mysqldb
+    docker run -it ubuntu bash
 
+## 2. Update system and install dependencies
+  
+  System and its dependencies
+
+    apt-get update && apt-get install -y python3 python3-pip
    
-## 2. Install and Configure Database
+## 3. Create application directory
     
- Install MySQL database
+ Create a working directory
     
-    apt-get install -y mysql-server mysql-client
+    /my-simple-webapp
 
-## 3. Start Database Service
-  - Start the database service
-    
-        service mysql start
+## 4. Copy application files
+  
+  Copy app.py or download it from source repository
 
-  - Create database and database users
-        
-        # mysql -u <username> -p
-        
-        mysql> CREATE DATABASE employee_db;
-        mysql> GRANT ALL ON *.* to db_user@'%' IDENTIFIED BY 'Password';
-        mysql> USE employee_db;
-        mysql> CREATE TABLE employees (name VARCHAR(20));
-        
-  - Insert some test data
-        
-        mysql> INSERT INTO employees VALUES ('JOHN');
-    
-## 4. Install and Configure Web Server
+    `app.py /my-simple-webapp/app.py`
+    `requirements.txt /my-simple-webapp/requirements.txt`
 
-Install Python Flask dependency
+## 5. Install and Configure Web Server
 
-    pip install flask
-    pip install flask-mysql
+  Install Python Flask dependency
 
-- Copy app.py or download it from source repository
-- Configure database credentials and parameters 
+    pip3 install -r requirements.txt
 
-## 5. Start Web Server
+
+## 6. Start Web Server
 
 Start web server
 
     FLASK_APP=app.py flask run --host=0.0.0.0
     
-## 6. Test
+## 7. Test
 
 Open a browser and go to URL
 
     http://<IP>:5000                            => Welcome
     http://<IP>:5000/how%20are%20you            => I am good, how about you?
-    http://<IP>:5000/read%20from%20database     => JOHN
+
+
+# Steps to Use and Push the Docker Image:
+
+## 1. Build the Image:
+
+    `docker build -t my-dockerhub-username/my-simple-webapp .`
+
+## 2. Run the Container:
+
+    `docker run -p 5000:5000 my-dockerhub-username/my-simple-webapp`
+
+##3. Push to Docker Hub:
+
+- Login to docker hub:
+
+  `docker login`
+
+- Tag the image:
+
+  `docker tag my-dockerhub-username/my-simple-webapp my-dockerhub-username/my-simple-webapp:latest`
+
+- Push the image:
+
+  `docker push my-dockerhub-username/my-simple-webapp:latest`
+
+- Verify on Docker Hub: Check your repository to confirm the image is available.
+
