@@ -1,4 +1,4 @@
-# My Simple Web Application
+# Simple Web Application to teach Docker
 
 This is a simple web application using [Python Flask](http://flask.pocoo.org/). 
 This is used in the demonstration of teaching Docker and Docker hub.
@@ -19,7 +19,7 @@ This is used in the demonstration of teaching Docker and Docker hub.
   
   System and its dependencies
 
-    apt-get update && apt-get install -y python3 python3-pip
+    apt-get update && apt-get install -y python3 python3-pip python3-venv
    
 ## 3. Create application directory
     
@@ -36,10 +36,12 @@ This is used in the demonstration of teaching Docker and Docker hub.
 
 ## 5. Install and Configure Web Server
 
-  Install Python Flask dependency
+  Create and activate a virtual environment, then install dependencies
 
-    pip3 install -r requirements.txt
-
+  `RUN python3 -m venv venv && \
+    . venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt`
 
 ## 6. Start Web Server
 
